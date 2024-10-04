@@ -158,3 +158,8 @@ cython_debug/
 
 #.DS_Store
 .DS_Store
+
+# ignore testing files
+*.json
+test.py
+photos/
