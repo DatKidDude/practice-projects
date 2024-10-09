@@ -13,14 +13,31 @@ class Star(Sprite):
         self.x = x
         self.y = y
         self.radius = radius
-    
+        # Store the time of the last update
+        self.last_update = pygame.time.get_ticks()
+        # Update screen every 80 milliseconds 
+        self.update_delay = 80
 
-    def update(self):
-        """Draw the star to the screen"""
+
+    def update(self, stars_list):
+        """Draw the star to the screen and handle twinkling"""
+        # Change brightness to simulate twinkling
+        brightness = random.randint(1, 255)
+        # Get the current time
+        current_time = pygame.time.get_ticks()
+
+        # Check if enough time has passed to update the brightness
+        if current_time - self.last_update > self.update_delay:
+            # Randomly select a star from the group
+            chosen_star = random.choice(stars_list)
+            chosen_star.color = (brightness, brightness, brightness)
+
+            # Reset the timer
+            self.last_update = current_time
+
+        # Draw the circle to the screen
         pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.radius)
-
-
-
+        
 def main():
     # Setup variables
     screen_width = 1200
@@ -37,7 +54,7 @@ def main():
     stars = Group()
 
     # Create a list of n stars
-    for _ in range(800):
+    for _ in range(500):
         # random (x, y) positions
         x_pos = random.randint(1, screen_width)
         y_pos = random.randint(1, screen_height)
@@ -46,6 +63,8 @@ def main():
         star = Star(screen, STAR_COLOR, x_pos, y_pos, star_radius)
         stars.add(star)
 
+    # Create a list of stars
+    stars_list = stars.sprites()
 
     while True:
         # check for events
@@ -55,9 +74,9 @@ def main():
         
         # Set the background color
         screen.fill(BG_COLOR)
-        
+
         # Draw stars on the screen
-        stars.update()
+        stars.update(stars_list)
 
         # Update the screen
         pygame.display.flip()
