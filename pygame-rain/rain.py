@@ -42,7 +42,6 @@ class Raindrop(Sprite):
 
 def create_raindrops(raindrops, max_raindrops, screen, screen_width):
     """Create more raindrops"""
-    print(len(raindrops))
     if len(raindrops) < max_raindrops:
         raindrop_x_pos = random.randint(1, screen_width - 100)
         raindrop_speed_factor = float(random.randint(100, 200))/100
